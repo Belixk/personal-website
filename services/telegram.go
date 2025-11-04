@@ -14,7 +14,7 @@ func SendTelegramNotification(name, email, message string) error {
 	chatID := os.Getenv("TELEGRAM_CHAT_ID")
 
 	if token == "" || chatID == "" {
-		return fmt.Errorf("Telegram конфигурация не найдена")
+		return fmt.Errorf("telegram конфигурация не найдена")
 	}
 
 	text := fmt.Sprintf(`Новое сообщение с сайта*
@@ -33,18 +33,18 @@ func SendTelegramNotification(name, email, message string) error {
 
 	msgBytes, err := json.Marshal(msg)
 	if err != nil {
-		return fmt.Errorf("Ошибка сереализации данных: %v", err)
+		return fmt.Errorf("ошибка сериализации данных: %v", err)
 	}
 
 	url := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", token)
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(msgBytes))
 	if err != nil {
-		return fmt.Errorf("Ошибка отправки запроса: %v", err)
+		return fmt.Errorf("ошибка отправки запроса: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Ошибка от Telegram API: %s", resp.Status)
+		return fmt.Errorf("ошибка от Telegram API: %s", resp.Status)
 	}
 
 	fmt.Println("Уведомление успешно отправлено в Telegram!")
